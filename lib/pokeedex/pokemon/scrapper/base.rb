@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
-require_relative "fetchers/base"
-require_relative "parsers/base"
+require_relative 'fetchers/base'
+require_relative 'parsers/base'
 
-module Pokeedex
-  module Pokemon
-    module Scrapper
+module Pokeedex # :nodoc:
+  module Pokemon # :nodoc:
+    module Scrapper # :nodoc:
+      ##
+      # Base class for the Pokemon scrapper. It holds the methods to crawl the Pokemon data from the Pokemon website
       class Base
-        BASE_URI = "https://www.pokemon.com/el/pokedex"
+        ##
+        # The base URI to crawl the Pokemon data
+        BASE_URI = 'https://www.pokemon.com/el/pokedex'
 
+        ##
+        # Crawl the Pokemon data from the Pokemon website
         def crawl
           raise NotImplementedError
         end

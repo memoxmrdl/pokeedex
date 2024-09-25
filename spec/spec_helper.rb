@@ -1,31 +1,24 @@
-$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
-require "pokeedex"
-require "webmock/rspec"
+require 'pokeedex'
+require 'webmock/rspec'
 
 Pokeedex.configure do |config|
-  config.db_name = "pokeedex_test.sqlite3"
+  config.db_name = 'pokeedex_test.sqlite3'
 end
 
 Pokeedex.boot
 
 def file_fixture(filename)
-  open(File.join(File.dirname(__FILE__), "fixtures", "#{filename}")).read
+  open(File.join(File.dirname(__FILE__), 'fixtures', "#{filename}")).read
 end
 
-Dir[File.expand_path(File.join(File.dirname(__FILE__), "support", "**", "*.rb"))].each { |f| require f }
+Dir[File.expand_path(File.join(File.dirname(__FILE__), 'support', '**', '*.rb'))].each { |f| require f }
 
 RSpec.configure do |config|
-  config.after(:suite) do
+  config.before(:each) do
     Pokeedex::Database.clean!
-  end
-
-  config.after(:each) do
-    Pokeedex::Database.clean!
-  end
-
-  config.after(:context) do
-    Pokeedex::Database.clean!
+    Pokeedex::Database.run_migrations!
   end
 
   config.expect_with :rspec do |expectations|
