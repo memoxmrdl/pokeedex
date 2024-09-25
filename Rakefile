@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require "bundler/gem_tasks"
-require "minitest/test_task"
+require "sequel"
+require "yaml"
+require "rake"
+# require "minitest/test_task"
 
-Minitest::TestTask.create
+# Minitest::TestTask.create
 
 require "standard/rake"
 
