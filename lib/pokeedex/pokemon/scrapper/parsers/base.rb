@@ -105,7 +105,7 @@ module Pokeedex # :nodoc:
 
           def raw_category
             raw_body
-              .xpath('/html/body/div[4]/section[3]/div[2]/div/div[4]/div[1]/div[2]/div/ul/li[1]/span[2]')
+              .css('div.pokemon-ability-info.color-bg.color-lightblue.match.active > div.column-7.push-4 > div > ul > li:nth-child(1) > span.attribute-value')
               .text
           rescue StandardError
             nil
@@ -120,12 +120,15 @@ module Pokeedex # :nodoc:
               .css('.pokedex-pokemon-details-right')
               .css('.pokemon-ability-info > .column-7 > .right-column > ul > li:nth-child(2) > ul.attribute-list > li > a > span')
               .children
+              .uniq
+              .map(&:text)
+              .map(&:strip)
           rescue StandardError
             []
           end
 
           def abilities
-            raw_abilities.map(&:text).uniq.map(&:strip) if raw_abilities.any?
+            raw_abilities if raw_abilities.any?
           end
 
           def raw_gender
@@ -149,6 +152,7 @@ module Pokeedex # :nodoc:
               .map(&:text)
               .uniq
               .map(&:strip)
+              .reject(&:empty?)
           rescue StandardError
             []
           end
@@ -164,6 +168,7 @@ module Pokeedex # :nodoc:
               .map(&:text)
               .uniq
               .map(&:strip)
+              .reject(&:empty?)
           rescue StandardError
             []
           end
