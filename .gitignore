@@ -6,3 +6,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/lib/pokeedex/db/*.sqlite3

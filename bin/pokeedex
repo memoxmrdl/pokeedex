@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+
+def check_python_installed
+  `python --version`
+  $?.success? || `python3 --version`
+end
+
+def check_node_installed
+  node_version = `node --version`
+  return [false, nil] unless $?.success?
+
+  version = node_version.match(/^v(\d+)\.(\d+)\.(\d+)/)
+  return [true, version] if version
+
+  [false, nil]
+end
+
+def check_node_version(version)
+  major = version[1].to_i
+  minor = version[2].to_i
+  major > 18 || (major == 18 && minor >= 0)
+end
+
+def check_dependencies
+  unless check_python_installed
+    puts "Hi! Sorry =( Pokeedex needs Python and Node.js to work. Please install them before running the program."
+    return
+  end
+
+  node_installed, node_version = check_node_installed
+  unless node_installed
+    puts "Hi! Sorry =( Pokeedex needs Python and Node.js to work. Please install them before running the program."
+    return
+  end
+
+  unless check_node_version(node_version)
+    puts "It's Require Node.js 18 version or lastest. Your current version is #{node_version}."
+    return
+  end
+
+  `playwright install`
+end
+
+check_dependencies
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../lib"))
+
+require "pokeedex"
+
+options = {query: ARGV[0]}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: pokeedex [number|name|type]"
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+if ARGV.empty?
+  warn "You need to introduce a number, name or type of a Pokemon"
+  warn "USAGE: #{$PROGRAM_NAME} [number|name|type]"
+  exit 1
+end
+
+Pokeedex.boot
+
+begin
+  pokemons = Pokeedex::Pokemon::Base.search(options[:query])
+rescue Pokeedex::Exceptions::ScrapperError => e
+  warn e.message
+  exit 1
+end
+
+if pokemons.empty?
+  warn "\nNo information found about the pokemon or criteria"
+  exit 1
+end
+
+pokemons.each do |pokemon|
+  puts Pokeedex::Pokemon::Decorators::Base.new(pokemon)
+end
