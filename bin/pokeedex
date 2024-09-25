@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "optparse"
+require 'optparse'
 
 def check_python_installed
   `python --version`
@@ -25,13 +25,13 @@ end
 
 def check_dependencies
   unless check_python_installed
-    puts "Hi! Sorry =( Pokeedex needs Python and Node.js to work. Please install them before running the program."
+    puts 'Hi! Sorry =( Pokeedex needs Python and Node.js to work. Please install them before running the program.'
     return
   end
 
   node_installed, node_version = check_node_installed
   unless node_installed
-    puts "Hi! Sorry =( Pokeedex needs Python and Node.js to work. Please install them before running the program."
+    puts 'Hi! Sorry =( Pokeedex needs Python and Node.js to work. Please install them before running the program.'
     return
   end
 
@@ -45,23 +45,23 @@ end
 
 check_dependencies
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "/../lib"))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '/../lib'))
 
-require "pokeedex"
+require 'pokeedex'
 
-options = {query: ARGV[0]}
+options = { query: ARGV[0] }
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: pokeedex [number|name|type]"
+  opts.banner = 'Usage: pokeedex [number|name|type]'
 
-  opts.on("-h", "--help", "Prints this help") do
+  opts.on('-h', '--help', 'Prints this help') do
     puts opts
     exit
   end
 end.parse!
 
 if ARGV.empty?
-  warn "You need to introduce a number, name or type of a Pokemon"
+  warn 'You need to introduce a number, name or type of a Pokemon'
   warn "USAGE: #{$PROGRAM_NAME} [number|name|type]"
   exit 1
 end
