@@ -57,7 +57,7 @@ Nombre: Bulbasaur
 Descripción: Tras nacer, crece alimentándose durante un tiempo de los nutrientes que contiene el bulbo de su lomo.
 Altura: 0.7 m
 Peso: 6.9 kg
-Categoría:
+Categoría: Semilla
 Habilidades: Espesura
 Genero: Macho, Hembra
 Tipo: Planta, Veneno
