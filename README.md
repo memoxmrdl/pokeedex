@@ -1,30 +1,100 @@
 # Pokeedex
 
-TODO: Delete this and the text below, and describe your gem
+Pokeedex is a Ruby gem that provides an interface to interact with the [Pokémon Pokédex](https://www.pokemon.com/el/pokedex). It allows you to retrieve detailed information about Pokémon, including their stats, abilities, types, and evolutions. This gem is ideal for developers who want to integrate Pokémon data into their Ruby applications easily and efficiently.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pokeedex`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Features
+
+- Search for Pokémon by name or number.
+- Retrieve detailed stats for each Pokémon.
+- Information about Pokémon abilities and types.
+
+### Next comming features
+
+- Data on Pokémon evolutions.
+- Support multilanguage.
+
+## Requirements
+
+- Python 3.9^
+- NodeJS v18^
+- Yarn 1.22^
+
+Pokedex requires [Playwright](https://playwright.dev/) to perform Web Scraping to obtain information about a Pokemon from [https://www.pokemon.com/el/pokedex](https://www.pokemon.com/el/pokedex). For Ruby, use the [playwright-ruby-client](https://playwright-ruby-client.vercel.app/) gem client to be able to interact with Playwright and use the browser that is part of the library installed. For the use of the browser, use an executable to be able to use the browser in Headless mode.
+
+For default Pokeedex use Chronium browser (You don't need install any browser).
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+To install the gem and add it to your application's Gemfile, execute:
 
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+    $ bundle add pokeedex
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+    $ gem install pokeedex
 
 ## Usage
 
-TODO: Write usage instructions here
+For use pokeedex you only need execute from your terminal the following command:
 
-## Development
+```
+$ bin/pokeedex --help
+Usage: pokeedex [number|name|type]
+    -h, --help                       Prints this help
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+NOTE: If you do not have Python, NodeJS and Yarn installed you may be prompted that they need to be installed, please check the requirements and try again.
+
+### Example outputs
+
+#### Find by number
+
+```
+$ bin/pokeedex 1
+Número: 1
+Nombre: Bulbasaur
+Descripción: Tras nacer, crece alimentándose durante un tiempo de los nutrientes que contiene el bulbo de su lomo.
+Altura: 0.7 m
+Peso: 6.9 kg
+Categoría:
+Habilidades: Espesura
+Genero: Macho, Hembra
+Tipo: Planta, Veneno
+Habilidades: Fuego, Hielo, Volador, Psíquico
+
+Puntos de base
+###------------ PS
+###------------ Ataque
+###------------ Defensa
+####----------- Ataque Especial
+####----------- Defensa Especial
+###------------ Velocidad
+```
+
+#### Find by name
+
+```
+$ bin/pokeedex pikachu
+Número: 25
+Nombre: Pikachu
+Descripción: Cuando se enfada, este Pokémon descarga la energía que almacena en el interior de las bolsas de las mejillas.
+Altura: 0.4 m
+Peso: 6.0 kg
+Categoría: Ratón
+Habilidades: Elec. Estática
+Genero: Macho, Hembra
+Tipo: Eléctrico
+Habilidades: Tierra
+
+Puntos de base
+###------------ PS
+####----------- Ataque
+###------------ Defensa
+###------------ Ataque Especial
+###------------ Defensa Especial
+######--------- Velocidad
+```
 
 ## Contributing
 
