@@ -35,8 +35,9 @@ module Pokeedex # :nodoc:
             browser do |context|
               page = context.new_page(viewport: generate_random_viewport)
               page.goto(url)
+              page.wait_for_load_state
 
-              fake_mouse_movements(page, steps: 7)
+              fake_mouse_movements(page, steps: 6)
               fake_scroll_page_down_and_up(page)
 
               page.content
