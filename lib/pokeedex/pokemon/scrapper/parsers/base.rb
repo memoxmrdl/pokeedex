@@ -1,18 +1,26 @@
 # frozen_string_literal: true
 
-require "nokogiri"
+require 'nokogiri'
 
-module Pokeedex
-  module Pokemon
-    module Scrapper
-      module Parsers
+module Pokeedex # :nodoc:
+  module Pokemon # :nodoc:
+    module Scrapper # :nodoc:
+      module Parsers # :nodoc:
+        ##
+        # Base class for the Pokemon parser. It holds the response and the methods to parse the response and return
+        # the Pokemon attributes from a HTML response
         class Base
+          ##
+          # Response from the Pokemon::Pokemon::Scrapper::Fetcher::Base website (HTML response) to parse
           attr_reader :response
 
           def initialize(response)
             @response = response
           end
 
+          ##
+          # Return the Pokemon attributes as a JSON object
+          # @return [Hash] the Pokemon attributes as a JSON object
           def as_json(*)
             {
               number: number,
@@ -36,8 +44,8 @@ module Pokeedex
           end
 
           def raw_number
-            raw_body.css(".pokedex-pokemon-pagination-title > div > .pokemon-number").children[0].text.strip
-          rescue
+            raw_body.css('.pokedex-pokemon-pagination-title > div > .pokemon-number').children[0].text.strip
+          rescue StandardError
             nil
           end
 
@@ -46,8 +54,8 @@ module Pokeedex
           end
 
           def raw_name
-            raw_body.css(".pokedex-pokemon-pagination-title > div").children[0].text
-          rescue
+            raw_body.css('.pokedex-pokemon-pagination-title > div').children[0].text
+          rescue StandardError
             nil
           end
 
@@ -57,9 +65,9 @@ module Pokeedex
 
           def raw_description
             raw_body
-              .css(".pokedex-pokemon-details-right")
-              .css(".version-descriptions .active").children[0].text
-          rescue
+              .css('.pokedex-pokemon-details-right')
+              .css('.version-descriptions .active').children[0].text
+          rescue StandardError
             nil
           end
 
@@ -69,11 +77,11 @@ module Pokeedex
 
           def raw_hight
             raw_body
-              .css(".pokedex-pokemon-details-right")
-              .css(".pokemon-ability-info > .column-7 > .left-column > ul > li:nth-child(1) > span.attribute-value")
+              .css('.pokedex-pokemon-details-right')
+              .css('.pokemon-ability-info > .column-7 > .left-column > ul > li:nth-child(1) > span.attribute-value')
               .text
-              .gsub(",", ".")
-          rescue
+              .gsub(',', '.')
+          rescue StandardError
             nil
           end
 
@@ -83,11 +91,11 @@ module Pokeedex
 
           def raw_weight
             raw_body
-              .css(".pokedex-pokemon-details-right")
-              .css(".pokemon-ability-info > .column-7 > .left-column > ul > li:nth-child(2) > span.attribute-value")
+              .css('.pokedex-pokemon-details-right')
+              .css('.pokemon-ability-info > .column-7 > .left-column > ul > li:nth-child(2) > span.attribute-value')
               .text
-              .gsub(",", ".")
-          rescue
+              .gsub(',', '.')
+          rescue StandardError
             nil
           end
 
@@ -97,9 +105,9 @@ module Pokeedex
 
           def raw_category
             raw_body
-              .xpath("/html/body/div[4]/section[3]/div[2]/div/div[4]/div[1]/div[2]/div/ul/li[1]/span[2]")
+              .xpath('/html/body/div[4]/section[3]/div[2]/div/div[4]/div[1]/div[2]/div/ul/li[1]/span[2]')
               .text
-          rescue
+          rescue StandardError
             nil
           end
 
@@ -109,10 +117,10 @@ module Pokeedex
 
           def raw_abilities
             raw_body
-              .css(".pokedex-pokemon-details-right")
-              .css(".pokemon-ability-info > .column-7 > .right-column > ul > li:nth-child(2) > ul.attribute-list > li > a > span")
+              .css('.pokedex-pokemon-details-right')
+              .css('.pokemon-ability-info > .column-7 > .right-column > ul > li:nth-child(2) > ul.attribute-list > li > a > span')
               .children
-          rescue
+          rescue StandardError
             []
           end
 
@@ -122,11 +130,11 @@ module Pokeedex
 
           def raw_gender
             raw_body
-              .css(".pokedex-pokemon-details-right")
-              .css(".pokemon-ability-info > .column-7 > .left-column > ul > li:nth-child(3) > span.attribute-value > i")
-              .map { |i| i.attribute("class").text }
+              .css('.pokedex-pokemon-details-right')
+              .css('.pokemon-ability-info > .column-7 > .left-column > ul > li:nth-child(3) > span.attribute-value > i')
+              .map { |i| i.attribute('class').text }
               .uniq
-          rescue
+          rescue StandardError
             []
           end
 
@@ -136,12 +144,12 @@ module Pokeedex
 
           def raw_types
             raw_body
-              .css(".pokedex-pokemon-attributes > .dtm-type > ul > li > a")
+              .css('.pokedex-pokemon-attributes > .dtm-type > ul > li > a')
               .children
               .map(&:text)
               .uniq
               .map(&:strip)
-          rescue
+          rescue StandardError
             []
           end
 
@@ -151,12 +159,12 @@ module Pokeedex
 
           def raw_weakness
             raw_body
-              .css(".dtm-weaknesses > ul > li > a > span")
+              .css('.dtm-weaknesses > ul > li > a > span')
               .children
               .map(&:text)
               .uniq
               .map(&:strip)
-          rescue
+          rescue StandardError
             []
           end
 
@@ -165,15 +173,15 @@ module Pokeedex
           end
 
           def raw_stats_info
-            raw_body.css(".pokemon-stats-info > ul")
+            raw_body.css('.pokemon-stats-info > ul')
           end
 
           def raw_stat_names
-            raw_stats_info.css("li > span").map(&:text)
+            raw_stats_info.css('li > span').map(&:text)
           end
 
           def raw_stat_index_value(index)
-            raw_stats_info.css("li > ul > li:nth-child(1)")[index].attribute("data-value").value.to_i
+            raw_stats_info.css('li > ul > li:nth-child(1)')[index].attribute('data-value').value.to_i
           end
 
           def raw_stats

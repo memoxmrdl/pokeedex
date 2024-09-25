@@ -2,12 +2,26 @@
 
 require 'playwright'
 
-module Pokeedex
-  module Pokemon
-    module Scrapper
-      module Fetchers
+module Pokeedex # :nodoc:
+  module Pokemon # :nodoc:
+    module Scrapper # :nodoc:
+      module Fetchers # :nodoc:
+        ##
+        # It holds the Playwright instance and the methods to fetch the content of a URL
+        # and fake mouse movements and scroll the page to avoid detection, and to generate a random viewport size to avoid detection.
+        # This implementation is based on the Playwright gem (
         class Base
-          attr_reader :url, :playwright_exec, :playwright
+          ##
+          # The URL to fetch the content from
+          attr_reader :url
+
+          ##
+          # The Playwright executable instance to use
+          attr_reader :playwright_exec
+
+          ##
+          # The Playwright instance to use to interact with the browser and the page to fetch the content from the URL
+          attr_reader :playwright
 
           def initialize(url:)
             @url = url
@@ -15,28 +29,28 @@ module Pokeedex
             @playwright = playwright_exec.playwright
           end
 
+          ##
+          # Fetch the content of the URL and return the content as a string (HTML) or raise an exception if the content could not be fetched
           def content
-            begin
-              browser do |context|
-                page = context.new_page(viewport: generate_random_viewport)
-                page.goto(url)
+            browser do |context|
+              page = context.new_page(viewport: generate_random_viewport)
+              page.goto(url)
 
-                fake_mouse_movements(page, steps: 7)
-                fake_scroll_page_down_and_up(page)
+              fake_mouse_movements(page, steps: 7)
+              fake_scroll_page_down_and_up(page)
 
-                page.content
-              end
-            rescue Playwright::Error
-              raise Exceptions::ScrapperError
+              page.content
             end
+          rescue Playwright::Error
+            raise Exceptions::ScrapperError
           end
 
+          ##
+          # Open a browser instance and execute the block with the browser instance and close the browser instance after the block is executed
           def browser(&block)
-            begin
-              block.call(chromium)
-            ensure
-              chromium.close
-            end
+            block.call(chromium)
+          ensure
+            chromium.close
           end
 
           private
@@ -49,7 +63,7 @@ module Pokeedex
                 '--disable-blink-features=AutomationControlled'
               ]
 
-              playwright.chromium.launch(headless: true, args:)
+              playwright.chromium.launch(headless: true, args: args)
             end
           end
 
@@ -82,7 +96,7 @@ module Pokeedex
           end
 
           def fake_scroll_page_down_and_up(page)
-            page_height = page.evaluate("document.body.scrollHeight")
+            page_height = page.evaluate('document.body.scrollHeight')
 
             current_scroll_position = 0
             scroll_step = 100

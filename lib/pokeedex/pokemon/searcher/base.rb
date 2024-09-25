@@ -1,20 +1,31 @@
 # frozen_string_literal: true
 
-require "forwardable"
+require 'forwardable'
 
-module Pokeedex
-  module Pokemon
-    module Searcher
-      class Base
+module Pokeedex # :nodoc:
+  module Pokemon # :nodoc:
+    module Searcher # :nodoc:
+      class Base # :nodoc:
+        ##
+        # The base class for the Pokemon searcher. It holds the methods to search the Pokemon data from the database or the Pokemon website
         extend Forwardable
 
-        attr_reader :query, :records
+        ##
+        # The query to search the Pokemon data
+        attr_reader :query
+
+        ##
+        # The records found from the search
+        attr_reader :records
 
         def initialize(query)
           @query = query
           @records = collection
         end
 
+        ##
+        # Return the first record found from the search
+        # @return [Pokeedex::Pokemon::Model::Base]
         def_delegators :@records, :each, :first, :last, :size, :count, :empty?
 
         private
