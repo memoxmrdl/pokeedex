@@ -34,9 +34,27 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install pokeedex
 
+or
+
+Clone the repository on your local and access to code and use it
+
+    $ git clone git@github.com:memoxmrdl/pokeedex.git
+    $ cd pokeedex
+
 ## Usage
 
-For use pokeedex you only need execute from your terminal the following command:
+### CLI
+
+For use pokeedex you only need execute from your terminal the following command, if you are used `gem install`:
+
+```
+$ pokeedex --help
+Usage: pokeedex [number|name]
+    -h, --help                       Prints this help
+
+```
+
+NOTE: If you are cloned the repository from on your local then use:
 
 ```
 $ bin/pokeedex --help
@@ -46,6 +64,28 @@ Usage: pokeedex [number|name]
 ```
 
 NOTE: If you do not have Python, NodeJS and Yarn installed you may be prompted that they need to be installed, please check the requirements and try again.
+
+### API
+
+```
+# pokeedex_api.rb
+
+require 'pokeedex'
+
+Pokeedex.boot
+
+begin
+  query = 'pikachu'
+
+  pokemons = Pokeedex::Pokemon::Base.search(query)
+  pokemon = pokemons.first
+
+  puts pokemon.number
+  puts pokemon.name
+rescue Pokeedex::Exceptions::ScrapperError => e
+  puts e.message
+end
+```
 
 ### Example outputs
 
@@ -96,6 +136,10 @@ Puntos de base
 ###------------ Defensa Especial
 ######--------- Velocidad
 ```
+
+## I hate you IMPERVA!
+
+Me la pelaste!
 
 ## Contributing
 
