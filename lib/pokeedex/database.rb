@@ -28,7 +28,7 @@ module Pokeedex # :nodoc:
     # Run the migrations for the database connection to the database file to use for the gem (default: /path/to/pokeedex/db/pokeedex_local.sqlite3) using the migrations in the migrations folder
     # The migrations are run in the order of the timestamp in the filename of the migration file (e.g. 001_create_pokemon_table.rb)
     def self.run_migrations!
-      Sequel::Migrator.run(connection, File.join(Pokeedex.root_path, 'pokeedex', 'db', 'migrations'))
+      Sequel::Migrator.run(connection, File.join(Pokeedex.root_path, 'lib', 'pokeedex', 'db', 'migrations'))
     end
 
     ##

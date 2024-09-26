@@ -20,7 +20,7 @@ module Pokeedex # :nodoc:
     attr_writer :db_path
 
     def initialize
-      @playwright_cli_executable_path = File.join(Dir.pwd, 'node_modules', '.bin', 'playwright')
+      @playwright_cli_executable_path = File.join(Pokeedex.root_path, 'node_modules', '.bin', 'playwright')
 
       @db_name = 'pokeedex_local.sqlite3'
     end
@@ -35,7 +35,7 @@ module Pokeedex # :nodoc:
     ##
     # Return the path to the database file to use for the gem (default: /path/to/pokeedex/db/pokeedex_local.sqlite3)
     def db_path
-      @db_path ||= File.join(Pokeedex.root_path, 'pokeedex', 'db', db_name)
+      @db_path ||= File.join(Pokeedex.root_path, 'lib', 'pokeedex', 'db', db_name)
     end
 
     ##
