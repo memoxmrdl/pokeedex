@@ -52,7 +52,7 @@ require 'pokeedex'
 options = { query: ARGV[0] }
 
 OptionParser.new do |opts|
-  opts.banner = 'Usage: pokeedex [number|name|type]'
+  opts.banner = 'Usage: pokeedex [number|name]'
 
   opts.on('-h', '--help', 'Prints this help') do
     puts opts
@@ -61,8 +61,8 @@ OptionParser.new do |opts|
 end.parse!
 
 if ARGV.empty?
-  warn 'You need to introduce a number, name or type of a Pokemon'
-  warn "USAGE: #{$PROGRAM_NAME} [number|name|type]"
+  warn 'You need to introduce a number or name of a Pokemon'
+  warn "USAGE: #{$PROGRAM_NAME} [number|name]"
   exit 1
 end
 

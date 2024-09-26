@@ -1,4 +1,4 @@
-require "sequel"
+require 'sequel'
 
 Sequel.migration do
   change do
