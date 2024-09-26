@@ -11,9 +11,12 @@ module Pokeedex # :nodoc:
       ##
       # Base class for the Pokemon model. It holds the database connection and the methods to interact with the database table for the Pokemon model
       class Base < Sequel::Model(Database.connection[:pokemons])
+        CACHE_TTL = 3600
+
         plugin :timestamps, update_on_create: true
         plugin :validation_helpers
         plugin :serialization, :json, :abilities, :gender, :types, :weakness, :stats
+        plugin :caching, CACHE_TTL
 
         ##
         # Search for a Pokemon by number or name
