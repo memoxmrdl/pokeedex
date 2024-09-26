@@ -7,7 +7,7 @@ Pokeedex.configure do |config|
   config.db_name = 'pokeedex_test.sqlite3'
 end
 
-Pokeedex.boot
+Pokeedex.init
 
 def file_fixture(filename)
   open(File.join(File.dirname(__FILE__), 'fixtures', "#{filename}")).read

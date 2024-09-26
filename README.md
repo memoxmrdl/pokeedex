@@ -16,13 +16,11 @@ Pokeedex is a Ruby gem that provides an interface to interact with the [Pokémon
 
 ## Requirements
 
-- Python 3.9^
 - NodeJS v18^
-- Yarn 1.22^
 
 Pokedex requires [Playwright](https://playwright.dev/) to perform Web Scraping to obtain information about a Pokemon from [https://www.pokemon.com/el/pokedex](https://www.pokemon.com/el/pokedex). For Ruby, use the [playwright-ruby-client](https://playwright-ruby-client.vercel.app/) gem client to be able to interact with Playwright and use the browser that is part of the library installed. For the use of the browser, use an executable to be able to use the browser in Headless mode.
 
-For default Pokeedex use Chronium browser (You don't need install any browser).
+For default Pokeedex use Chronium browser (You don't need install a browser).
 
 ## Installation
 
@@ -63,7 +61,7 @@ Usage: pokeedex [number|name]
 
 ```
 
-NOTE: If you do not have Python, NodeJS and Yarn installed you may be prompted that they need to be installed, please check the requirements and try again.
+NOTE: If you do not have NodeJS installed you may be prompted that they need to be installed, please check the requirements and try again.
 
 ### API
 
@@ -72,7 +70,7 @@ NOTE: If you do not have Python, NodeJS and Yarn installed you may be prompted t
 
 require 'pokeedex'
 
-Pokeedex.boot
+Pokeedex.init
 
 begin
   query = 'pikachu'

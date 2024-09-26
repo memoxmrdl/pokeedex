@@ -25,7 +25,7 @@ module Pokeedex # :nodoc:
 
           def initialize(url:)
             @url = url
-            @playwright_exec = Playwright.create(playwright_cli_executable_path: Pokeedex.configuration.playwright_cli_executable_path)
+            @playwright_exec = Playwright.create(playwright_cli_executable_path: 'npx playwright')
             @playwright = playwright_exec.playwright
           end
 

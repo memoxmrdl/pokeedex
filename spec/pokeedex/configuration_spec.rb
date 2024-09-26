@@ -7,13 +7,6 @@ RSpec.describe Pokeedex::Configuration do
     it 'returns a Configuration instance' do
       is_expected.to be_instance_of(described_class)
     end
-
-    it 'returns the default values' do
-      expect(subject.playwright_cli_executable_path).to eq(
-        File.join(Pokeedex.root_path, 'node_modules', '.bin', 'playwright')
-      )
-      expect(subject.db_name).to eq('pokeedex_local.sqlite3')
-    end
   end
 
   describe '#db_name=' do

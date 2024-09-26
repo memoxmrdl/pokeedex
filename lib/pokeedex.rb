@@ -4,6 +4,7 @@ require 'base64'
 
 require_relative 'pokeedex/exceptions'
 require_relative 'pokeedex/version'
+require_relative 'pokeedex/install_playwright'
 require_relative 'pokeedex/configuration'
 require_relative 'pokeedex/database'
 require_relative 'pokeedex/pokemon/decorators/base'
@@ -48,8 +49,10 @@ module Pokeedex # :nodoc:
   end
 
   ##
-  # Boot the gem by connecting to the database and running the migrations if needed and loading the models
-  def self.boot
+  # Init the gem by connecting to the database and running the migrations if needed and loading the models
+  def self.init
+    InstallPlaywright.run!
+
     connect_to_database
   end
 end
