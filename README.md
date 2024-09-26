@@ -12,6 +12,7 @@ Pokeedex is a Ruby gem that provides an interface to interact with the [Pokémon
 
 - Data on Pokémon evolutions.
 - Support multilanguage.
+- Find pokemon's by types
 
 ## Requirements
 
@@ -39,7 +40,7 @@ For use pokeedex you only need execute from your terminal the following command:
 
 ```
 $ bin/pokeedex --help
-Usage: pokeedex [number|name|type]
+Usage: pokeedex [number|name]
     -h, --help                       Prints this help
 
 ```
