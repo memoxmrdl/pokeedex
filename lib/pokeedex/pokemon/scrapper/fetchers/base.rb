@@ -11,13 +11,11 @@ module Pokeedex # :nodoc:
         # and fake mouse movements and scroll the page to avoid detection, and to generate a random viewport size to avoid detection.
         # This implementation is based on the Playwright gem (
         class Base
+          DEFAULT_RETRIES = 3
+
           ##
           # The URL to fetch the content from
           attr_reader :url
-
-          ##
-          # The Playwright executable instance to use
-          attr_reader :playwright_exec
 
           ##
           # The Playwright instance to use to interact with the browser and the page to fetch the content from the URL
@@ -25,20 +23,19 @@ module Pokeedex # :nodoc:
 
           def initialize(url:)
             @url = url
-            @playwright_exec = Playwright.create(playwright_cli_executable_path: 'npx playwright')
-            @playwright = playwright_exec.playwright
+            @playwright = Playwright.create(playwright_cli_executable_path: 'npx playwright').playwright
           end
 
           ##
-          # Fetch the content of the URL and return the content as a string (HTML) or raise an exception if the content could not be fetched
+          # Fetch the content of the URL and return the content as a string (HTML) or
+          # raise an exception if the content could not be fetched
           def content
-            browser do |context|
+            browser(retries: DEFAULT_RETRIES) do |context|
               page = context.new_page(viewport: generate_random_viewport)
               page.goto(url)
-              page.wait_for_load_state
 
-              fake_mouse_movements(page, steps: 6)
-              fake_scroll_page_down_and_up(page)
+              page.wait_for_load_state(state: 'networkidle')
+              simulate_scroll_page_down_and_up(page)
 
               page.content
             end
@@ -47,11 +44,16 @@ module Pokeedex # :nodoc:
           end
 
           ##
-          # Open a browser instance and execute the block with the browser instance and close the browser instance after the block is executed
-          def browser(&block)
+          # Open a browser instance and execute the block with the browser instance
+          # and close the browser instance after the block is executed.
+          # Also it will retry the block execution if an error occurs
+          def browser(retries: 0, &block)
             block.call(chromium)
-          ensure
-            chromium.close
+          rescue Playwright::Error => e
+            retries -= 1
+            raise e if retries.negative?
+
+            retry
           end
 
           private
@@ -69,34 +71,13 @@ module Pokeedex # :nodoc:
           end
 
           def generate_random_viewport
-            min_width = 1024
-            max_width = 2560
-            min_height = 800
-            max_height = 1440
-
-            width = rand(min_width..max_width)
-            height = rand(min_height..max_height)
+            width = rand(1024..2560)
+            height = rand(800..1440)
 
             { width: width, height: height }
           end
 
-          def fake_mouse_movements(page, steps: 5)
-            viewport = page.viewport_size
-
-            max_width = viewport[:width]
-            max_height = viewport[:height]
-
-            steps.times do
-              x = rand(0..max_width)
-              y = rand(0..max_height)
-
-              page.mouse.move(x, y)
-
-              sleep(rand(0.2..0.5))
-            end
-          end
-
-          def fake_scroll_page_down_and_up(page)
+          def simulate_scroll_page_down_and_up(page)
             page_height = page.evaluate('document.body.scrollHeight')
 
             current_scroll_position = 0
@@ -109,7 +90,7 @@ module Pokeedex # :nodoc:
               sleep(0.01)
             end
 
-            while current_scroll_position > 0
+            while current_scroll_position.positive?
               page.evaluate("window.scrollBy(0, -#{scroll_step})")
               current_scroll_position -= scroll_step
 

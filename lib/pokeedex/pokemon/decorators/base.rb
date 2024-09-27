@@ -18,12 +18,12 @@ module Pokeedex # :nodoc:
       #   Habilidades: Fuego, Hielo, Volador, Psíquico
       #
       #   Puntos de base
-      #   %%%------------ PS
-      #   %%%------------ Ataque
-      #   %%%------------ Defensa
-      #   %%%%----------- Ataque Especial
-      #   %%%%----------- Defensa Especial
-      #   %%%------------ Velocidad
+      #   ###------------ PS
+      #   ###------------ Ataque
+      #   ###------------ Defensa
+      #   ####----------- Ataque Especial
+      #   ###----------- Defensa Especial
+      #   ###------------ Velocidad
       #
       class Base
         ##
@@ -44,14 +44,18 @@ module Pokeedex # :nodoc:
         ##
         # Return the decorated Pokemon object as a string for display to the user in the CLI or other interfaces
         def to_s
-          decorate
+          build_decorate
         end
 
         private
 
-        def decorate
-          return "Pokemon's not found" unless pokemon
+        def build_decorate
+          return "Pokemon's not found" if pokemon.nil?
 
+          build_information
+        end
+
+        def build_information
           <<~DECORATOR
             Número: #{number}
             Nombre: #{name}
@@ -84,6 +88,8 @@ module Pokeedex # :nodoc:
         def abilities = pokemon.abilities.join(', ')
 
         def gender
+          return 'Desconocido' unless pokemon.gender
+
           pokemon.gender.map { |g| GENDER[g] }.join(', ')
         end
 

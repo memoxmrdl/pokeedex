@@ -15,7 +15,7 @@ require_relative 'pokeedex/pokemon/base'
 module Pokeedex # :nodoc:
   ##
   # The root path of the gem
-  @root_path = File.expand_path(File.join(__dir__, '..'))
+  @root_path = File.expand_path('..', __dir__)
 
   class << self
     ##
