@@ -1,0 +1,39 @@
+name: Release to RubyGems
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby:
+          - 3.0
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true # Run "bundle install", and cache the result automatically.
+
+      - name: Get tag version
+        id: tag_version
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Print tag version
+        run: echo ${{ steps.tag_version.outputs.VERSION }}
+
+      - name: Build gem
+        run: gem build pokeedex.gemspec
+
+      - name: Publish to RubyGems
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: gem push pokeedex-${{ steps.tag_version.outputs.VERSION}}.gem
