@@ -50,7 +50,7 @@ module Pokeedex # :nodoc:
         private
 
         def build_decorate
-          "Pokemon's not found" unless pokemon
+          return "Pokemon's not found" if pokemon.nil?
 
           build_information
         end
