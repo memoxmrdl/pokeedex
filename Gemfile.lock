@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pokeedex (0.1.0)
+    pokeedex (0.1.5)
       base64
       forwardable
       nokogiri
