@@ -18,17 +18,12 @@ module Pokeedex # :nodoc:
           attr_reader :url
 
           ##
-          # The Playwright executable instance to use
-          attr_reader :playwright_exec
-
-          ##
           # The Playwright instance to use to interact with the browser and the page to fetch the content from the URL
           attr_reader :playwright
 
           def initialize(url:)
             @url = url
-            @playwright_exec = Playwright.create(playwright_cli_executable_path: 'npx playwright')
-            @playwright = playwright_exec.playwright
+            @playwright = Playwright.create(playwright_cli_executable_path: 'npx playwright').playwright
           end
 
           ##
@@ -58,7 +53,6 @@ module Pokeedex # :nodoc:
             retries -= 1
             raise e if retries.negative?
 
-            puts "Retry #{retries}"
             retry
           end
 
@@ -77,13 +71,8 @@ module Pokeedex # :nodoc:
           end
 
           def generate_random_viewport
-            min_width = 1024
-            max_width = 2560
-            min_height = 800
-            max_height = 1440
-
-            width = rand(min_width..max_width)
-            height = rand(min_height..max_height)
+            width = rand(1024..2560)
+            height = rand(800..1440)
 
             { width: width, height: height }
           end
@@ -101,7 +90,7 @@ module Pokeedex # :nodoc:
               sleep(0.01)
             end
 
-            while current_scroll_position > 0
+            while current_scroll_position.positive?
               page.evaluate("window.scrollBy(0, -#{scroll_step})")
               current_scroll_position -= scroll_step
 
