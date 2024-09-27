@@ -1,13 +1,19 @@
 # frozen_string_literal: true
 
 module Pokeedex
+  ##
+  # InstallPlaywright class is responsible for checking the dependencies and installing Playwright
   class InstallPlaywright
     NODE_VERSION_REQUIRED = 18
 
+    ##
+    # Run the installation process
     def self.run!
       new.run
     end
 
+    ##
+    # Check the dependencies and install Playwright
     def run
       check_dependencies!
 
